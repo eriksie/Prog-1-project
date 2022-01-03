@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
-
+int flag=1;
 typedef struct
 {
     unsigned day,year,month;
@@ -49,6 +49,38 @@ void DestructEmployee(Employee* x)
     free(x->address);
     free(x->email);
     free(x);
+}
+int ValidName (char* Fname)
+{
+    int i;
+    for(i=0; i<strlen(Fname); i++)
+    {
+        if(Fname[i]<'A'||Fname[i]>'z')
+            flag=0;
+    }
+    return flag;
+}
+Employee* AddEmployee()
+{
+    int i,j,salary,id,phone_num,day,month,year;
+    char* Lname,*Fname,*address,*email;
+    printf("please enter the new Employee's first name\n");
+    scanf("%s",Fname);
+    while (!ValidName(Fname))
+    {
+        printf("please enter valid name\n");
+        scanf("%s",Fname);
+        flag=1;
+    }
+    printf("please enter the new Employee's Last name\n");
+    scanf("%s",Lname);
+    while (!ValidName(Lname))
+    {
+        printf("please enter valid name\n");
+        scanf("%s",Lname);
+        flag=1;
+    }
+
 }
 int main()
 {
