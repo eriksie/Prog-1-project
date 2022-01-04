@@ -174,6 +174,6 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
 }
 int main()
 {
-    printf("Hello world!\n");
+    printf("Hello\n");
     return 0;
 }
