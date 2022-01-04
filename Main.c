@@ -76,7 +76,7 @@ int ValidPhone (char* phone_num) // validates the phone number entered
     }
     return flag;
 }
-/*int ValidNum(int x)
+int ValidNum(int x)
 {
 flag =1;
 int j= log10(x)+1;
@@ -89,7 +89,7 @@ for (i=0;i<j;i++){
     x/=10;
 }
 return flag;
-}*/
+}
 
 int validDate(int day,int month, int year)// validates the date entered
 {
