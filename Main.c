@@ -3,6 +3,7 @@
 #include <string.h>
 #include <math.h>
 #include <ctype.h>
+
 int flag=1,i=0; // global variable flag used in validations and i used in iterations instead of declaring again in every function
 typedef struct
 {
@@ -145,13 +146,12 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
     }
     printf("please enter the new Employee's salary\n");
     scanf("%d",&salary);
-    scanf("%s",buffer);
-    while (!ValidNum(salary))
-    {
-        printf("please enter a valid salary\n");
-        scanf("%d",&salary);
-        scanf("%s",buffer);
-    }
+  //  while (!ValidNum(salary))
+  //  {
+       // printf("please enter a valid salary\n");
+      //  scanf("%d",&salary);
+      //  scanf("%s",buffer);
+  //  }
     printf("please enter the new Employee's Address\n");
     scanf("%s",address);
 
@@ -171,9 +171,83 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
            }
     printf("please enter Employee ID");
     scanf("%d",&id);
+    return  ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 }
+
+Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the employee to be modified and creates a new one
+{ int salary,day,month,year;
+  char Lname[10],Fname[10],address[30],email[30],phone_num[15];
+           for (i=0;i<10;i++)
+    {
+    if (x[i].id==ID)
+            DestructEmployee(x);
+    }
+    printf("please enter the modified Employee's first name\n");
+    scanf("%s",Fname);
+    while (!ValidName(Fname))
+    {
+        printf("please enter valid name\n");
+        scanf("%s",Fname);
+    }
+    printf("please enter the modified Employee's Last name\n");
+    scanf("%s",Lname);
+    while (!ValidName(Lname))
+    {
+        printf("please enter valid name\n");
+        scanf("%s",Lname);
+    }
+    printf("please enter the modified Employee's phone number\n");
+    scanf("%s",phone_num);
+    while (!ValidPhone(phone_num))
+    {
+        printf("please enter valid phone number\n");
+        scanf("%s",phone_num);
+    }
+    printf("please enter the modified Employee's salary\n");
+    scanf("%d",&salary);
+   // while (!ValidNum(salary))
+   // {
+    //    printf("please enter a valid salary\n");
+     //   scanf("%d",&salary);
+     //   scanf("%s",buffer);
+    //}
+    printf("please enter the modified Employee's Address\n");
+    scanf("%s",address);
+
+    printf("please enter the modified Employee's email\n");
+    scanf("%s",email);
+    while (!Validemail(email))
+    {
+        printf("please enter valid email\n");
+        scanf("%s",email);
+    }
+    printf("please enter the modified Date of birth DD/MM/YYYY\n");
+    scanf("%d %d %d",&day,&month,&year);
+    while (!validDate(day,month,year))
+           {
+               printf("please enter correct Date of birth DD/MM/YYYY\n");
+               scanf("%d %d %d",&day,&month,&year);
+           }
+          Employee* y= ConstructEmployee(ID,salary,phone_num,Fname,Lname,address,email,day,month,year);
+              printf("%d is the new employee salary\n",y->salary);
+
+  return y;
+}
+
+
 int main()
-{
-    printf("Hello\n");
+{   int Mod;
+Employee *x[10];
+char *Fname[20],*Lname[20];
+    printf("please enter an Employee's data\n");
+    x[0] = ConstructEmployee(1234,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
+    x[1] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
+    DestructEmployee(x[1]);
+    free(x[1]);
+    printf("%d is the ID\n",x[0]->id);
+    printf("please enter the employee ID to be modified\n");
+    scanf("%d",&Mod);
+    ModifyEmployee(Mod,x);
+
     return 0;
 }
