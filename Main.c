@@ -12,7 +12,8 @@ typedef struct
 // Employee struct
 typedef struct
 {
-    int id,salary;
+    int id;
+    float salary;
     char* Fname,*Lname,*address,*email,*phone_num;
     Date* Birthday;
 } Employee;
@@ -77,20 +78,17 @@ int ValidPhone (char* phone_num) // validates the phone number entered
     }
     return flag;
 }
-/*int ValidNum(int x)
+int ValidID(int x)
 {
-flag =1;
-int j= log10(x)+1;
-for (i=0;i<j;i++){
-    if(!(isdigit(x))){
-            flag=0;
-            return flag;
-
-            }
-    x/=10;
+    flag =1;
+    int n;
+    for(n=0; x!=0; x /= 10)
+       n++;
+    if (n == 3)
+        return flag;
+    else { flag = 0; return flag; }
 }
-return flag;
-}*/
+
 
 int validDate(int day,int month, int year)// validates the date entered
 {
@@ -171,6 +169,11 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
            }
     printf("please enter Employee ID");
     scanf("%d",&id);
+     while (!ValidID(id))
+    {
+        printf("please enter valid ID\n");
+        scanf("%d",id);
+    }
     return  ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 }
 
@@ -240,7 +243,7 @@ int main()
 Employee *x[10];
 char *Fname[20],*Lname[20];
     printf("please enter an Employee's data\n");
-    x[0] = ConstructEmployee(1234,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
+    x[0] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
     x[1] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
     DestructEmployee(x[1]);
     free(x[1]);
