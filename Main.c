@@ -54,6 +54,7 @@ void DestructEmployee(Employee* x) // frees the memory of the employee data afte
     free(x->email);
     free(x);
 }
+
 int Validemail (char* email) // validates email entered
 { if (strstr(email,"@")&& strstr(email,".com"))
     return 1;
@@ -71,6 +72,8 @@ int ValidName (char* Fname) //validates name entered
 }
 int ValidPhone (char* phone_num) // validates the phone number entered
 {   flag=1;
+    if(strlen(phone_num) != 11)
+        return 0;
     for(i=0; i<strlen(phone_num); i++)
     {
         if(phone_num[i]<'0'||phone_num[i]>'9')
@@ -78,18 +81,32 @@ int ValidPhone (char* phone_num) // validates the phone number entered
     }
     return flag;
 }
-int ValidID(int x)
+int ValidID(char *x)  // validates the ID entered
 {
-    flag =1;
-    int n;
-    for(n=0; x!=0; x /= 10)
-       n++;
-    if (n == 3)
-        return flag;
-    else { flag = 0; return flag; }
+    flag=1;
+    if(strlen(x) != 3)
+    return 0;
+    for(i=0; i<strlen(x); i++)
+    {
+        if(x[i]<'0'||x[i]>'9')
+            flag=0;
+    }
+    return flag;
 }
 
-
+int ValidSalary(char *x)  // validates the salary entered
+{
+    flag=1;
+    for(i=0; i<strlen(x); i++)
+    {
+        if(x[i]<'0'||x[i]>'9')
+        {
+           if(x[i]!='.')
+            flag=0;
+        }
+    }
+    return flag;
+}
 int validDate(int day,int month, int year)// validates the date entered
 {
 if(year>=1900 && year<=9999)
@@ -119,47 +136,57 @@ if(year>=1900 && year<=9999)
 }
 Employee* AddEmployee() // adds new employee entered by user.... still need to validate ID and Salary in it.
 {
-    int salary,id,day,month,year;
-    char Lname[10],Fname[10],address[30],email[30],phone_num[15],buffer[20];
+    int id,day,month,year;
+    float salary;
+    char ID[10], SALARY[10];
+    char Lname[10],Fname[10],address[30],email[30],phone_num[15],SALARY[10];
     printf("please enter the new Employee's first name\n");
     scanf("%s",Fname);
     while (!ValidName(Fname))
     {
-        printf("please enter valid name\n");
-        scanf("%s",Fname);
+            printf("please enter valid name\n");
+            scanf("%s",Fname);
     }
+    
+    
     printf("please enter the new Employee's Last name\n");
     scanf("%s",Lname);
     while (!ValidName(Lname))
     {
-        printf("please enter valid name\n");
-        scanf("%s",Lname);
+            printf("please enter valid name\n");
+            scanf("%s",Lname);
     }
+    
+    
     printf("please enter the new Employee's phone number\n");
     scanf("%s",phone_num);
     while (!ValidPhone(phone_num))
     {
-        printf("please enter valid phone number\n");
-        scanf("%s",phone_num);
+            printf("please enter valid phone number\n");
+            scanf("%s",phone_num);
     }
+    
+    
     printf("please enter the new Employee's salary\n");
-    scanf("%d",&salary);
-  //  while (!ValidNum(salary))
-  //  {
-       // printf("please enter a valid salary\n");
-      //  scanf("%d",&salary);
-      //  scanf("%s",buffer);
-  //  }
+    scanf("%s",&SALARY);
+    while (!ValidSalary(SALARY))
+    {
+            printf("please enter a valid salary\n");
+            scanf("%s",&SALARY);
+    }
+    salary = atof(SALARY);
+    
+    
     printf("please enter the new Employee's Address\n");
     scanf("%s",address);
 
     printf("please enter the new Employee's email\n");
     scanf("%s",email);
     while (!Validemail(email))
-    {
-        printf("please enter valid email\n");
-        scanf("%s",email);
-    }
+           {
+                printf("please enter valid email\n");
+                scanf("%s",email);
+           }
     printf("please enter Date of birth DD/MM/YYYY\n");
     scanf("%d %d %d",&day,&month,&year);
     while (!validDate(day,month,year))
@@ -167,24 +194,30 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
                printf("please enter correct Date of birth DD/MM/YYYY\n");
                scanf("%d %d %d",&day,&month,&year);
            }
+    
+    
     printf("please enter Employee ID");
-    scanf("%d",&id);
-     while (!ValidID(id))
+    scanf("%s",&ID);
+     while (!ValidID(ID))
     {
-        printf("please enter valid ID\n");
-        scanf("%d",id);
+            printf("please enter valid ID\n");
+            scanf("%s",ID);
     }
+    id = atoi(ID);
+    
     return  ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 }
 
 Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the employee to be modified and creates a new one
-{ int salary,day,month,year;
-  char Lname[10],Fname[10],address[30],email[30],phone_num[15];
-           for (i=0;i<10;i++)
+{ int day,month,year;
+ float salary;
+  char Lname[10],Fname[10],address[30],email[30],phone_num[15], SALARY[10];
+    for (i=0;i<10;i++)
     {
-    if (x[i].id==ID)
+         if (x[i].id==ID)
             DestructEmployee(x);
     }
+ 
     printf("please enter the modified Employee's first name\n");
     scanf("%s",Fname);
     while (!ValidName(Fname))
@@ -192,6 +225,8 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
         printf("please enter valid name\n");
         scanf("%s",Fname);
     }
+ 
+ 
     printf("please enter the modified Employee's Last name\n");
     scanf("%s",Lname);
     while (!ValidName(Lname))
@@ -199,6 +234,8 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
         printf("please enter valid name\n");
         scanf("%s",Lname);
     }
+ 
+ 
     printf("please enter the modified Employee's phone number\n");
     scanf("%s",phone_num);
     while (!ValidPhone(phone_num))
@@ -206,14 +243,17 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
         printf("please enter valid phone number\n");
         scanf("%s",phone_num);
     }
+    
+ 
     printf("please enter the modified Employee's salary\n");
-    scanf("%d",&salary);
-   // while (!ValidNum(salary))
-   // {
-    //    printf("please enter a valid salary\n");
-     //   scanf("%d",&salary);
-     //   scanf("%s",buffer);
-    //}
+    scanf("%s",&SALARY);
+    while (!ValidSalary(SALARY))
+    {
+        printf("please enter a valid salary\n");
+        scanf("%s",&SALARY);
+    }
+    salary = atoi(SALARY);
+ 
     printf("please enter the modified Employee's Address\n");
     scanf("%s",address);
 
@@ -224,6 +264,7 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
         printf("please enter valid email\n");
         scanf("%s",email);
     }
+ 
     printf("please enter the modified Date of birth DD/MM/YYYY\n");
     scanf("%d %d %d",&day,&month,&year);
     while (!validDate(day,month,year))
@@ -236,7 +277,6 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
 
   return y;
 }
-
 
 int main()
 {   int Mod;
