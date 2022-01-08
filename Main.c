@@ -17,6 +17,8 @@ typedef struct
     char* Fname,*Lname,*address,*email,*phone_num;
     Date* Birthday;
 } Employee;
+Employee *x[100] //global varir
+
 // we pass the date and it creates the struct
 Date* constructDate (int day,int month,int year)
 {
@@ -138,8 +140,7 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
 {
     int id,day,month,year;
     float salary;
-    char ID[10], SALARY[10];
-    char Lname[10],Fname[10],address[30],email[30],phone_num[15],SALARY[10];
+    char Lname[10],Fname[10],address[30],email[30],phone_num[15],SALARY[10],ID[10];
     printf("please enter the new Employee's first name\n");
     scanf("%s",Fname);
     while (!ValidName(Fname))
@@ -168,11 +169,11 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
     
     
     printf("please enter the new Employee's salary\n");
-    scanf("%s",&SALARY);
+    scanf("%s",SALARY);
     while (!ValidSalary(SALARY))
     {
             printf("please enter a valid salary\n");
-            scanf("%s",&SALARY);
+            scanf("%s",SALARY);
     }
     salary = atof(SALARY);
     
@@ -197,7 +198,7 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
     
     
     printf("please enter Employee ID");
-    scanf("%s",&ID);
+    scanf("%s",ID);
      while (!ValidID(ID))
     {
             printf("please enter valid ID\n");
@@ -207,6 +208,27 @@ Employee* AddEmployee() // adds new employee entered by user.... still need to v
     
     return  ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 }
+/**void Search(char *Lname)
+{
+    int c=0;
+    for (i=0;i<10;i++)
+    {
+        if(strcasecmp(x[i]->Lname , Lname) == 0)
+        {
+            printf("First name: %s\t",x[i]->Fname);
+            printf("Last name: %s\t",x[i]->Lname);
+            printf("Date of birth of employee: %d/%d/%d",x[i]->Birthday->day,x[i]->Birthday->month,x[i]->Birthday->year);
+            printf("ID of employee: %d\n",x[i]->id);
+            printf("Salary of employee: %f\n",x[i]->salary);
+            printf("Email of employee: %s\n",x[i]->email);
+            printf("Address of employee: %s\n",x[i]->address);
+            printf("Phone number of employee: %s\n",x[i]->phone_num);
+            c++;
+        }
+    } 
+    if (c==0)
+        printf("There are no employees with this last name.\n");
+} */
 
 Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the employee to be modified and creates a new one
 { int day,month,year;
@@ -246,7 +268,7 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
     
  
     printf("please enter the modified Employee's salary\n");
-    scanf("%s",&SALARY);
+    scanf("%s",SALARY);
     while (!ValidSalary(SALARY))
     {
         printf("please enter a valid salary\n");
@@ -273,15 +295,13 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
                scanf("%d %d %d",&day,&month,&year);
            }
           Employee* y= ConstructEmployee(ID,salary,phone_num,Fname,Lname,address,email,day,month,year);
-              printf("%d is the new employee salary\n",y->salary);
+              printf("%.2f is the new employee salary\n",y->salary);
 
   return y;
 }
 
 int main()
 {   int Mod;
-Employee *x[10];
-char *Fname[20],*Lname[20];
     printf("please enter an Employee's data\n");
     x[0] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
     x[1] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
@@ -291,6 +311,23 @@ char *Fname[20],*Lname[20];
     printf("please enter the employee ID to be modified\n");
     scanf("%d",&Mod);
     ModifyEmployee(Mod,x);
+ printf("please enter the employee ID to be modified\n");
+    scanf("%d",&Mod);
+    for (i=0;i<10;i++)
+    {
+         if (x[i]->id==Mod){
+            DestructEmployee(x[i]);
+            x[i] = ModifyEmployee(Mod,x);
+            break;
+    }
+    printf("please enter the employee ID to be deleted\n");
+    scanf("%d",&deletee);
+    for (i=0;i<10;i++)
+    {
+         if (x[i]->id==deletee){
+            DestructEmployee(x[i]);
+            break;
+    }
 
     return 0;
 }
