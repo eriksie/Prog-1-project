@@ -29,7 +29,7 @@ Date* constructDate (int day,int month,int year)
     return x;
 }
 //  we pass it the data and it creates the employee from scratch
-Employee* ConstructEmployee (int id,int salary,char* Phone_num,char*Fname,char*Lname,char* address, char* email,int day, int month, int year)
+Employee* ConstructEmployee (int id,float salary,char* Phone_num,char*Fname,char*Lname,char* address, char* email,int day, int month, int year)
 {
     Employee*x=malloc(sizeof(Employee));
     x->id=id;
@@ -274,7 +274,7 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
         printf("please enter a valid salary\n");
         scanf("%s",&SALARY);
     }
-    salary = atoi(SALARY);
+    salary = atof(SALARY);
  
     printf("please enter the modified Employee's Address\n");
     scanf("%s",address);
