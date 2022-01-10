@@ -57,7 +57,7 @@ int ValidName (char* Fname) //validates name entered
 {   flag=1;
     for(i=0; i<strlen(Fname); i++)
     {
-        if(Fname[i]<'A'||Fname[i]>'z')
+        if(isalpha(Fname[i]))
             flag=0;
     }
     return flag;
