@@ -129,9 +129,7 @@ int ValidSalary(char *x)  // validates the salary entered
 }
 int validDate(int day,int month,int year)// validates the date entered
 {
-  //  int day =atoi(day1);
-   // int month =atoi(month1);
-  //  int year= atoi(year1);
+
 if(year>=1900 && year<=2022)
     {
         if(month>=1 && month<=12)
@@ -157,6 +155,9 @@ if(year>=1900 && year<=2022)
         return 0;
     }
 }
+
+
+
 
 Employee * deSerialize(char *str,char d) // deserialize the entries in the file
 { char del[2]={d,0};
@@ -299,11 +300,16 @@ int RepeatedID(char* ID)
                 scanf("%s",email);
            }
     printf("please enter Date of birth DD/MM/YYYY\n");
-    scanf("%d/%d/%d",&day,&month,&year);
+    scanf("%d/",&day);
+    scanf("%d/",&month);
+    scanf("%d",&year);
     while (!validDate(day,month,year))
            {
                printf("please enter correct Date of birth DD/MM/YYYY\n");
-               scanf("%d/%d/%d",&day,&month,&year);
+               scanf("%d/",&day);
+               scanf("%d/",&month);
+               scanf("%d",&year);
+
            }
 
 
@@ -690,4 +696,5 @@ int main()
     }
     }
        return 0;
+
 }
