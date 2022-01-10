@@ -47,6 +47,7 @@ Employee* ConstructEmployee (int id,float salary,char* Phone_num,char*Fname,char
     return y;
 }
 
+
 int Validemail(char email[20])
 {
     int q,p1=0,p2=0;
@@ -550,7 +551,7 @@ void DeleteFunction(char first[20],char last[20])
     }
 }
 if(!p)
-    printf("no entry was found with the entered first and last name");
+    printf("no entry was found with the entered first and last name to be deleted");
 }
 int ValidFileName (char* filename)
 {   int d=0;
@@ -566,6 +567,16 @@ int ValidFileName (char* filename)
     else return 0;
 }
 
+void destructEmployee(Employee *Emp){
+   free(Emp->Birthday);
+   free(Emp->Lname);
+   free(Emp->Fname);
+   free(Emp->address);
+   free(Emp->phone_num);
+   free(Emp->email);
+   free(Emp);
+}
+
 void Exit()
 {
     char c;
@@ -579,8 +590,11 @@ void Exit()
         getchar();
         c=getchar();
     }
-    if (c=='Y'||c=='y')
+    if (c=='Y'||c=='y'){
+        for ( i = 0; i < sz; i++)
+          destructEmployee(Emp[i]);
         exit(0);
+}
 }
 int main()
 {   int mod,j,o;
