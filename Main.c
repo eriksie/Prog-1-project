@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <ctype.h>
+#include <math.h>
 
-int flag=1,i=0,n;
-char del=','; // global variable flag used in validations and i used in iterations instead of declaring again in every function
+int flag=0,i=0,sz=0;
+char filename[30];
 typedef struct
 {
     unsigned day,year,month;
@@ -18,45 +18,36 @@ typedef struct
     char* Fname,*Lname,*address,*email,*phone_num;
     Date* Birthday;
 } Employee;
-Employee *x[100];  //global array
-char filename[]="employees.txt";
-// we pass the date and it creates the struct
-void printE(int i);
+Employee *Emp[100];
+
 Date* constructDate (int day,int month,int year)
 {
-    Date*x=malloc(sizeof(Date));
-    x->day=day;
-    x->month=month;
-    x->year=year;
-    return x;
+    Date*z=malloc(sizeof(Date));
+    z->day=day;
+    z->month=month;
+    z->year=year;
+    return z;
 }
+
 Employee* ConstructEmployee (int id,float salary,char* Phone_num,char*Fname,char*Lname,char* address, char* email,int day, int month, int year)
 {
-    Employee*x=(Employee*)malloc(sizeof(Employee));
-    x->id=id;
-    x->phone_num=(char *)malloc(strlen(Phone_num)+1);
-    strcpy(x->phone_num,Phone_num);
-    x->salary=salary;
-    x->Fname=(char *) malloc(strlen(Fname)+1);
-    strcpy(x->Fname,Fname);
-    x->Lname=(char *) malloc(strlen(Lname)+1);
-    strcpy(x->Lname,Lname);
-    x->address=(char *) malloc(strlen(address)+1);
-    strcpy(x->address,address);
-    x->email=(char *) malloc(strlen(email)+1);
-    strcpy(x->email,email);
-    x->Birthday=constructDate(day,month,year);
-    return x;
+    Employee*y=(Employee*)malloc(sizeof(Employee));
+    y->id=id;
+    y->phone_num=(char *)malloc(strlen(Phone_num)+1);
+    strcpy(y->phone_num,Phone_num);
+    y->salary=salary;
+    y->Fname=(char *) malloc(strlen(Fname)+1);
+    strcpy(y->Fname,Fname);
+    y->Lname=(char *) malloc(strlen(Lname)+1);
+    strcpy(y->Lname,Lname);
+    y->address=(char *) malloc(strlen(address)+1);
+    strcpy(y->address,address);
+    y->email=(char *) malloc(strlen(email)+1);
+    strcpy(y->email,email);
+    y->Birthday=constructDate(day,month,year);
+    return y;
 }
-int  Numrec(char *filename)   //gets the total number of records
-{   int n=0;
-    FILE *fp=fopen(filename,"r");;
-    if (!fp) return -1;
-    fseek(fp, 0, SEEK_END);
-    n=ftell(fp)/sizeof(Employee);
-    fclose(fp);
-    return n;
-}
+
 Employee * deSerialize(char *str,char d) // deserialize the entries in the file
 { char del[2]={d,0};
     char *tok=strtok(str,del);   //getting first tok
@@ -104,10 +95,11 @@ char Lname[20],Fname[20],address[20],email[20],phone_num[100];
    return   ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 
 }
+
 void Load(char *filename,char del) // loads the file into an array
-{   int sizee=0;
+{   sz=0;
     FILE *fp;
-    fp=fopen("employees.txt","r");
+    fp=fopen(filename,"r");
     if(!fp)
     {
         fprintf(stdout,"ERROR Reading FILE %s\n",filename);
@@ -119,108 +111,164 @@ void Load(char *filename,char del) // loads the file into an array
         char *s=fgets(str, 199, fp);
         if (!s)
             break;
-      x[(sizee)++]=deSerialize(str,del);
+      Emp[(sz)++]=deSerialize(str,del);
     }
     fclose(fp);
 
 }
-void sortbyLname(Employee* x[],int n) //sorts by last name
+  void AddEmployee() // adds new employee entered by user
 {
-    int j,temp;
-    for (i=0; i<n; i++)
+    int id,day,month,year;
+    float salary;
+    char Lname[10],Fname[10],address[30],email[30],phone_num[15],SALARY[10],ID[10];
+    printf("please enter the new Employee's first name\n");
+    scanf("%s",Fname);
+    while (!ValidName(Fname))
     {
-        for (j=i+i; j<n; j++)
-        {
-            if((strcasecmp((x[i]->Lname),(x[j]->Lname))>0))
-            {
-                temp=x[j];
-                x[j]=x[i];
-                x[i]=temp;
-            }
-        }
+            printf("please enter valid name\n");
+            scanf("%s",Fname);
     }
-}
-void sortbyDOB(Employee* x[],int n) // sorts by Date of Birth
-{
-    int j,temp;
-    for (i=0; i<n; i++)
-    {
-        for (j=i+i; j<n; j++)
-        {
-            if ((x[i]->Birthday->year)>(x[j]->Birthday->year))
-            {  temp=x[j];
-                x[j]=x[i];
-                x[i]=temp;
 
-            }
-            if ((x[i]->Birthday->month)>(x[j]->Birthday->month))
-            {
-                temp=x[j];
-                x[j]=x[i];
-                x[i]=temp;
-            }
-            if ((x[i]->Birthday->day)>(x[j]->Birthday->day))
-            {
-                temp=x[j];
-                x[j]=x[i];
-                x[i]=temp;
-            }
-        }
-    }
-}
-void sortbySalary(Employee* x[],int n) // sorts employees by salary
-{
-    int j,temp;
-    for (i=0; i<n; i++)
+
+    printf("please enter the new Employee's Last name\n");
+    scanf("%s",Lname);
+    while (!ValidName(Lname))
     {
-        for (j=i+i; j<n; j++)
-        {
-            if((x[i]->salary)>(x[j]->salary))
-            {
-                temp=x[j];
-                x[j]=x[i];
-                x[i]=temp;
-            }
-        }
+            printf("please enter valid name\n");
+            scanf("%s",Lname);
     }
-}
-void Printsort(char *x )   //printing after sorting
-{
-    int s;
-    printf("Please choose type of sorting from this menu:\n");
-    printf("1. Sort by Last name\t2.Sort by date of birth.\t3.Sort by salary.\n");
-    scanf("%d",&s);
-    while (!(s==1||s==2||s==3))
+
+
+    printf("please enter the new Employee's phone number\n");
+    scanf("%s",phone_num);
+    while (!ValidPhone(phone_num))
     {
-        printf("Please choose a number from the list\n");
-        scanf("%d",&s);
+            printf("please enter valid phone number\n");
+            scanf("%s",phone_num);
     }
-    switch(s)
+
+
+    printf("please enter the new Employee's salary\n");
+    scanf("%s",SALARY);
+    while (!ValidSalary(SALARY))
     {
-    case 1:
-        sortbyLname(x,Numrec(filename));
-        break;
-    case 2:
-        sortbyDOB(x,Numrec(filename));
-        break;
-    case 3:
-        sortbySalary(x,Numrec(filename));
-        break;
+            printf("please enter a valid salary\n");
+            scanf("%s",SALARY);
     }
-    for (i=0;i<Numrec(filename);i++)
-    printE(i);
-}
-//  we pass it the data and it creates the employee from scratch
-void DestructEmployee(Employee* x) // frees the memory of the employee data after we are done using it
-{
-    free(x->Fname);
-    free(x->Lname);
-    free(x->Birthday);
-    free(x->address);
-    free(x->email);
-    free(x);
+    salary = atof(SALARY);
+
+
+    printf("please enter the new Employee's Address\n");
+    scanf("%s",address);
+
+    printf("please enter the new Employee's email\n");
+    scanf("%s",email);
+    while (!Validemail(email))
+           {
+                printf("please enter valid email\n");
+                scanf("%s",email);
+           }
+    printf("please enter Date of birth DD/MM/YYYY\n");
+    scanf("%d %d %d",&day,&month,&year);
+    while (!validDate(day,month,year))
+           {
+               printf("please enter correct Date of birth DD/MM/YYYY\n");
+               scanf("%d %d %d",&day,&month,&year);
+           }
+
+
+    printf("please enter Employee ID\n");
+scanf("%s",ID);
+     while (!ValidID(ID))
+    {
+            printf("please enter valid ID\n");
+            scanf("%s",ID);
+    }
+    id = atoi(ID);
+
+    Emp[sz++] = ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 }
 
+void ModifyEmployee(int ID,int i)  // function that deletes the employee to be modified and creates a new one
+{ int day,month,year;
+ float salary;
+  char Lname[10],Fname[10],address[30],email[30],phone_num[15], SALARY[10];
+    printf("please enter the modified Employee's first name\n");
+    scanf("%s",Fname);
+    strcpy(Emp[i]->Fname,Fname);
+    while (!ValidName(Fname))
+    {
+        printf("please enter valid name\n");
+        scanf("%s",Fname);
+        strcpy(Emp[i]->Fname,Fname);
+
+    }
+
+
+    printf("please enter the modified Employee's Last name\n");
+    scanf("%s",Lname);
+    strcpy(Emp[i]->Lname,Lname);
+
+    while (!ValidName(Lname))
+    {
+        printf("please enter valid name\n");
+        scanf("%s",Lname);
+        strcpy(Emp[i]->Lname,Lname);
+
+    }
+
+
+    printf("please enter the modified Employee's phone number\n");
+    scanf("%s",phone_num);
+    strcpy(Emp[i]->phone_num,phone_num);
+
+    while (!ValidPhone(phone_num))
+    {
+        printf("please enter valid phone number\n");
+        scanf("%s",phone_num);
+        strcpy(Emp[i]->phone_num,phone_num);
+
+    }
+
+
+    printf("please enter the modified Employee's salary\n");
+    scanf("%s",SALARY);
+    while (!ValidSalary(SALARY))
+    {
+        printf("please enter a valid salary\n");
+        scanf("%s",SALARY);
+    }
+    salary = atof(SALARY);
+    Emp[i]->salary = salary;
+    printf("please enter the modified Employee's Address\n");
+    scanf("%s",address);
+    strcpy(Emp[i]->address,address);
+
+
+    printf("please enter the modified Employee's email\n");
+    scanf("%s",email);
+    strcpy(Emp[i]->email,email);
+
+    while (!Validemail(email))
+    {
+        printf("please enter valid email\n");
+        scanf("%s",email);
+        strcpy(Emp[i]->email,email);
+
+    }
+
+    printf("please enter the modified Date of birth DD/MM/YYYY\n");
+    scanf("%d %d %d",&day,&month,&year);
+    while (!validDate(day,month,year))
+           {
+               printf("please enter correct Date of birth DD/MM/YYYY\n");
+               scanf("%d %d %d",&day,&month,&year);
+           }
+           Emp[i]->Birthday->day = day;
+           Emp[i]->Birthday->month = month;
+           Emp[i]->Birthday->year = year;
+             // printf("%.2f is the new employee salary\n",y->salary);
+}
 int Validemail (char* email) // validates email entered
 { if (strstr(email,"@")&& strstr(email,".com"))
     return 1;
@@ -304,90 +352,45 @@ if(year>=1900 && year<=9999)
         return 0;
     }
 }
-Employee* AddEmployee() // adds new employee entered by user
+
+char * serializeStudent(Employee *s, char d) //d=delimeeter
 {
-    int id,day,month,year;
-    float salary;
-    char Lname[10],Fname[10],address[30],email[30],phone_num[15],SALARY[10],ID[10];
-    printf("please enter the new Employee's first name\n");
-    scanf("%s",Fname);
-    while (!ValidName(Fname))
-    {
-            printf("please enter valid name\n");
-            scanf("%s",Fname);
-    }
-
-
-    printf("please enter the new Employee's Last name\n");
-    scanf("%s",Lname);
-    while (!ValidName(Lname))
-    {
-            printf("please enter valid name\n");
-            scanf("%s",Lname);
-    }
-
-
-    printf("please enter the new Employee's phone number\n");
-    scanf("%s",phone_num);
-    while (!ValidPhone(phone_num))
-    {
-            printf("please enter valid phone number\n");
-            scanf("%s",phone_num);
-    }
-
-
-    printf("please enter the new Employee's salary\n");
-    scanf("%s",SALARY);
-    while (!ValidSalary(SALARY))
-    {
-            printf("please enter a valid salary\n");
-            scanf("%s",SALARY);
-    }
-    salary = atof(SALARY);
-
-
-    printf("please enter the new Employee's Address\n");
-    scanf("%s",address);
-
-    printf("please enter the new Employee's email\n");
-    scanf("%s",email);
-    while (!Validemail(email))
-           {
-                printf("please enter valid email\n");
-                scanf("%s",email);
-           }
-    printf("please enter Date of birth DD/MM/YYYY\n");
-    scanf("%d %d %d",&day,&month,&year);
-    while (!validDate(day,month,year))
-           {
-               printf("please enter correct Date of birth DD/MM/YYYY\n");
-               scanf("%d %d %d",&day,&month,&year);
-           }
-
-
-    printf("please enter Employee ID");
-    scanf("%s",ID);
-     while (!ValidID(ID))
-    {
-            printf("please enter valid ID\n");
-            scanf("%s",ID);
-    }
-    id = atoi(ID);
-
-    return  ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
+    char ste[100];
+    ste[0]=0;
+    sprintf(ste,"%d%c%.2f%c%s%c%s%c%s%c%s%c%s%c%d%c%d%c%d\n",s->id,d,s->salary,d,s->phone_num,d,s->Fname,d,s->Lname,d,s->address,d,s->email,d,s->Birthday->day,d,s->Birthday->month,d,s->Birthday->year);
+    char* ret=malloc(strlen(ste)+1);
+    strcpy(ret,ste);
+    return ret;
 }
+void saveFile(char *filename,Employee *emp[],char del)
+{   printf("size of record in save file is %d\n",sz);
+    FILE *fj=fopen(filename,"w");
+    if(!fj)
+    {
+        fprintf(stdout,"ERROR OPENING FILE\n");
+        exit(0);
+    }
+    for (i=0; i<sz; i++)
+    {
+        char *str=serializeStudent(emp[i],del);
+        fprintf(fj,str);
+        free(str);
+    }
+    fclose(fj);
+    printf("File %s saved\n",filename);
+}
+
 void printE(int i)
 {
-    printf("First name:  %s\nLast name:  %s\nID of employee:  %d\nDate of birth of employee:  %d/%d/%d\nSalary of employee:  %.2f\nEmail of employee:  %s\nAddress of employee:  %s\nPhone number of employee:  %s\n",x[i]->Fname,x[i]->Lname,x[i]->id,x[i]->Birthday->day,x[i]->Birthday->month,x[i]->Birthday->year,x[i]->salary,x[i]->email,x[i]->address,x[i]->phone_num);
+    printf("First name:  %s\nLast name:  %s\nID of employee:  %d\nDate of birth of employee:  %d/%d/%d\nSalary of employee:  %.2f\nEmail of employee:  %s\nAddress of employee:  %s\nPhone number of employee:  %s\n",Emp[i]->Fname,Emp[i]->Lname,Emp[i]->id,Emp[i]->Birthday->day,Emp[i]->Birthday->month,Emp[i]->Birthday->year,Emp[i]->salary,Emp[i]->email,Emp[i]->address,Emp[i]->phone_num);
 }
 
 void Search(char *Lname)
 {
-    n = Numrec(filename);
     int c=0,j;
-    for (i=0;i<n;i++)
+    for (i=0;i<sz;i++)
     {
-        j = strcasecmp(Lname,x[i]->Lname);
+        j = strcasecmp(Lname,Emp[i]->Lname);
         if(j == 0)
         {
             printE(i);
@@ -399,119 +402,178 @@ void Search(char *Lname)
         printf("There are no employees with this last name.\n");
 }
 
-Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the employee to be modified and creates a new one
-{ int day,month,year;
- float salary;
-  char Lname[10],Fname[10],address[30],email[30],phone_num[15], SALARY[10];
-    printf("please enter the modified Employee's first name\n");
-    scanf("%s",Fname);
-    while (!ValidName(Fname))
-    {
-        printf("please enter valid name\n");
-        scanf("%s",Fname);
-    }
-
-
-    printf("please enter the modified Employee's Last name\n");
-    scanf("%s",Lname);
-    while (!ValidName(Lname))
-    {
-        printf("please enter valid name\n");
-        scanf("%s",Lname);
-    }
-
-
-    printf("please enter the modified Employee's phone number\n");
-    scanf("%s",phone_num);
-    while (!ValidPhone(phone_num))
-    {
-        printf("please enter valid phone number\n");
-        scanf("%s",phone_num);
-    }
-
-
-    printf("please enter the modified Employee's salary\n");
-    scanf("%s",SALARY);
-    while (!ValidSalary(SALARY))
-    {
-        printf("please enter a valid salary\n");
-        scanf("%s",SALARY);
-    }
-    salary = atof(SALARY);
-
-    printf("please enter the modified Employee's Address\n");
-    scanf("%s",address);
-
-    printf("please enter the modified Employee's email\n");
-    scanf("%s",email);
-    while (!Validemail(email))
-    {
-        printf("please enter valid email\n");
-        scanf("%s",email);
-    }
-
-    printf("please enter the modified Date of birth DD/MM/YYYY\n");
-    scanf("%d %d %d",&day,&month,&year);
-    while (!validDate(day,month,year))
-           {
-               printf("please enter correct Date of birth DD/MM/YYYY\n");
-               scanf("%d %d %d",&day,&month,&year);
-           }
-          Employee* y= ConstructEmployee(ID,salary,phone_num,Fname,Lname,address,email,day,month,year);
-              printf("%.2f is the new employee salary\n",y->salary);
-
-  return y;
-}
-char * serializeStudent(Employee *s, char d) //d=delimeeter
+void sortbySalary(Employee* x[],int n) // sorts employees by salary
 {
-    char ste[100];
-    ste[0]=0;
-    sprintf(ste,"%d%c%f%c%s%c%s%c%s%c%s%c%s%c%d%c%d%c%d\n",s->id,d,s->salary,d,s->phone_num,d,s->Fname,d,s->Lname,d,s->address,d,s->email,d,s->Birthday->day,d,s->Birthday->month,d,s->Birthday->year);
-    char* ret=malloc(strlen(ste)+1);
-    strcpy(ret,ste);
-    return ret;
+    int j;
+    Employee *temp;
+    for (i=0; i<n; i++)
+    {
+        for (j=0; j<n-1; j++)
+        {
+            if((Emp[j+1]->salary)>(Emp[j]->salary))
+            {
+                temp=Emp[j];
+                Emp[j]=Emp[j+1];
+                Emp[j+1]=temp;
+            }
+        }
+    }
 }
-void saveFile(char *filename,Employee *emp[],char del)
+
+void sortbyDOB(Employee* x[],int n) // sorts by Date of Birth
 {
-    FILE * fp=fopen(filename,"w");
-    if(!fp)
+    int j;
+    Employee* temp;
+    for (i=0; i<n; i++)
     {
-        fprintf(stdout,"ERROR CREATING FILE\n");
-        exit(0);
+        for (j=0; j<n-1; j++)
+        {
+            if ((Emp[j+1]->Birthday->year)>(Emp[j]->Birthday->year))
+            {  temp=Emp[j];
+                Emp[j]=Emp[j+1];
+                Emp[j+1]=temp;
+
+            }
+           else if ((Emp[j+1]->Birthday->year)==(Emp[j]->Birthday->year)&&(Emp[j+1]->Birthday->month)>(Emp[j]->Birthday->month))
+            {
+                temp=Emp[j];
+                Emp[j]=Emp[j+1];
+                Emp[j+1]=temp;
+            }
+           else  if ((Emp[j+1]->Birthday->year)==(Emp[j]->Birthday->year)&&(Emp[j+1]->Birthday->month)==(Emp[j]->Birthday->month)&&(Emp[j+1]->Birthday->day)>(Emp[j]->Birthday->day))
+            {
+                temp=Emp[j];
+                Emp[j]=Emp[j+1];
+                Emp[j+1]=temp;
+            }
+        }
     }
-    for (i=0; i<Numrec(filename); i++)
-    {
-        char *str=serializeStudent(emp[i],del);
-        fprintf(fp,str);
-        free(str);
-    }
-    fclose(fp);
-    printf("File %s saved\n",filename);
 }
+
+void sortbyLname(Employee* x[],int n) //sorts by last name
+{
+    int j;
+    Employee* temp;
+    for (i=0; i<n; i++)
+    {
+        for (j=0; j<n-1; j++)
+        {
+            if((strcasecmp((Emp[j+1]->Lname),(Emp[j]->Lname))>0))
+            {
+                temp=Emp[j];
+                Emp[j]=Emp[j+1];
+                Emp[j+1]=temp;
+            }
+        }
+    }
+}
+void Printsort()   //printing after sorting
+{
+    int s;
+    printf("Please choose type of sorting from this menu:\n");
+    printf("1. Sort by Last name\t2.Sort by date of birth.\t3.Sort by salary.\n");
+    scanf("%d",&s);
+    while (!(s==1||s==2||s==3))
+    {
+        printf("Please choose a number from the list\n");
+        scanf("%d",&s);
+    }
+    switch(s)
+    {
+    case 1:
+       sortbyLname(Emp,sz);
+        break;
+    case 2:
+       sortbyDOB(Emp,sz);
+        break;
+    case 3:
+        sortbySalary(Emp,sz);
+        break;
+    }
+    for (i=0;i<sz;i++){
+    printf("\n\n");
+    printE(i);
+    }
+}
+
+void DeleteFunction(char first[20],char last[20])
+{
+    int i,j;
+    for(i=0; i<sz; i++)
+    {
+        if(strcasecmp(Emp[i]->Lname,last)==0 && strcasecmp(Emp[i]->Fname,first)==0)
+        {
+            for(j=i; j<sz-1; j++)
+                Emp[j]=Emp[j+1];
+            sz-=1;
+            i--;
+            DeleteFunction(first,last);
+        }
+    }
+}
+
 int main()
-{
-    Load(filename,',');
-    Search("Khaled");
-    saveFile(filename,x,del);
-     /*  int Mod;
-    printf("please enter an Employee's data\n");
-    x[0] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
-    x[1] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
- printf("please enter the employee ID to be modified\n");
-    scanf("%d",&Mod);
-    for (i=0;i<10;i++)
-    {
-         if (x[i]->id==Mod){
-            x[i] = ModifyEmployee(Mod,x);
-            break;
-    }
-    /*printf("please enter the employee ID to be deleted\n");
-    for (i=0;i<10;i++)
-    {
-         if (x[i]->id==deletee){
-            DestructEmployee(x[i]);
-            break;
-    }*/
+{   int mod,j,o,c=1;
+    char sure;
+    char Lname[20],Fname[20];
+    printf("this is the main menu\n");
 
-    return 0;
+    printf("please enter file name to load from. it must be in the format of .txt\n");
+    scanf("%s",filename);
+
+    Load(filename,',');// mehtag a3ml validation ll filename lesa
+    while (c){
+    printf("please choose one of the following options to do\n");
+    printf("search for an Employee by last name: 1\n");
+    printf("Add a new Employee: 2\n");
+    printf("Delete an already existing Employee: 3\n");
+    printf("Modify an already existing Employee: 4\n");
+    printf("Print Employee records: 5\n");
+    printf("Save file: 6\n");
+    printf("Quit: 7\n");
+    scanf("%d",&o);
+    switch (o)
+    {
+     case 1: printf("enter last name to search for\n");
+             scanf("%s",Lname);
+             Search(Lname);
+             break;
+     case 2:
+        AddEmployee();
+        break;
+     case 3:
+        printf("please enter Employee first name to be deleted\n");
+        scanf("%s",Fname);
+        printf("please enter Employee last name to be deleted\n");
+        scanf("%s",Lname);
+        DeleteFunction(Fname,Lname);
+        break;
+     case 4:
+          printf("please enter employee ID to be modified\n");
+          scanf("%d",&mod);
+
+          for (j=0;j<sz;j++){
+             if (Emp[j]->id==mod){
+               ModifyEmployee(mod,j);
+               break;
+               }
+             if (j==sz-1)
+           printf("no employee is found with this ID\n");
+           }
+           break;
+     case 5:
+        Printsort();
+        break;
+     case 6:
+        saveFile(filename,Emp,',');
+        break;
+     case 7:
+        printf("are you sure you want to quit?\n type Y if sure and anything else if you want to return to the menu\n");
+        sure = getchar();
+        if (sure == 'Y' || 'y')
+            c=0;
+        else break;
+    }
+    }
+       return 0;
 }
