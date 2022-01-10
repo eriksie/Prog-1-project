@@ -47,13 +47,6 @@ Employee* ConstructEmployee (int id,float salary,char* Phone_num,char*Fname,char
     return y;
 }
 
-/*int Validemail (char* email) // validates email entered
-{ if (strstr(email,"@")&& strstr(email,".com"))
-    return 1;
-
-return 0;
-}*/
-
 int Validemail(char email[20])
 {
     int q,p1=0,p2=0;
