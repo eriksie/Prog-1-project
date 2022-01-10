@@ -539,15 +539,17 @@ void Printsort()   //printing after sorting
 void DeleteFunction(char first[20],char last[20])
 {
     int j,c=1,p=0;
+    while (c){c--;
     for(i=0; i<sz; i++)
-    {  while (c){
+    {
         if(strcasecmp(Emp[i]->Lname,last)==0 && strcasecmp(Emp[i]->Fname,first)==0)
         {
             for(j=i; j<sz-1; j++)
                 Emp[j]=Emp[j+1];
             sz-=1;
             p+=1;
-        }else c=0;
+            c++;
+        }
     }
 }
 if(!p)
