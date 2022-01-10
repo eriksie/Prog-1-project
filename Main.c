@@ -208,7 +208,7 @@ void Printsort(char *x )   //printing after sorting
         break;
     }
     for (i=0;i<Numrec(filename);i++)
-    printf("Id = %d, First name=%s, Last name=%s, Email=%s, Address=%s, Salary=%f, Phone number=%s , Birthday = %d/%d/%d \n",x[i]->id,x[i]->Fname,x[i]->Lname,x[i]->email,x[i]->address,x[i]->salary,x[i]->phone_num,x[i]->Birthday->day,x[i]->Birthday->month, x[i]->Birthday->year);
+    printE(i);
 }
 //  we pass it the data and it creates the employee from scratch
 void DestructEmployee(Employee* x) // frees the memory of the employee data after we are done using it
