@@ -47,6 +47,93 @@ Employee* ConstructEmployee (int id,float salary,char* Phone_num,char*Fname,char
     return y;
 }
 
+int Validemail (char* email) // validates email entered
+{ if (strstr(email,"@")&& strstr(email,".com"))
+    return 1;
+
+return 0;
+}
+int ValidName (char* Fname) //validates name entered
+{   flag=1;
+    for(i=0; i<strlen(Fname); i++)
+    {
+        if(Fname[i]<'A'||Fname[i]>'z')
+            flag=0;
+    }
+    return flag;
+}
+int ValidPhone (char* phone_num) // validates the phone number entered
+{   flag=1;
+    if(strlen(phone_num) != 11)
+        return 0;
+    for(i=0; i<strlen(phone_num); i++)
+    {
+        if(phone_num[0]!= '0')
+        {
+            flag = 0;
+        }
+        if(phone_num[i]<'0'||phone_num[i]>'9')
+            flag=0;
+    }
+    return flag;
+}
+int ValidID(char *x)  // validates the ID entered
+{
+    flag=1;
+    if(strlen(x) != 3)
+    return 0;
+    for(i=0; i<strlen(x); i++)
+    {
+        if(x[i]<'0'||x[i]>'9')
+            flag=0;
+    }
+    return flag;
+}
+
+int ValidSalary(char *x)  // validates the salary entered
+{
+    flag=1;
+    for(i=0; i<strlen(x); i++)
+    {
+        if(x[i]<'0'||x[i]>'9')
+        {
+           if(x[i]!='.')
+            flag=0;
+        }
+    }
+    return flag;
+}
+int validDate(int day,int month,int year)// validates the date entered
+{
+  //  int day =atoi(day1);
+   // int month =atoi(month1);
+  //  int year= atoi(year1);
+if(year>=1900 && year<=2022)
+    {
+        if(month>=1 && month<=12)
+        {
+            if((day>=1 && day<=31) && (month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12))
+                return 1;
+            else if((day>=1 && day<=30) && (month==4 || month==6 || month==9 || month==11))
+                return 1;
+            else if((day>=1 && day<=28) && (month==2))
+                return 1;
+            else if(day==29 && month==2 && (year%400==0 ||(year%4==0 && year%100!=0)))
+                return 1;
+            else
+                return 0;
+        }
+        else
+        {
+            return 0;
+        }
+    }
+    else
+    {
+        return 0;
+    }
+}
+
 Employee * deSerialize(char *str,char d) // deserialize the entries in the file
 { char del[2]={d,0};
     char *tok=strtok(str,del);   //getting first tok
@@ -158,8 +245,8 @@ void Load(char *filename,char del) // loads the file into an array
 
 
     printf("please enter the new Employee's Address\n");
-    scanf("%s",address);
-
+    getchar();
+    gets(address);
     printf("please enter the new Employee's email\n");
     scanf("%s",email);
     while (!Validemail(email))
@@ -167,12 +254,12 @@ void Load(char *filename,char del) // loads the file into an array
                 printf("please enter valid email\n");
                 scanf("%s",email);
            }
-    printf("please enter Date of birth DD MM YYYY\n");
-    scanf("%d %d %d",&day,&month,&year);
+    printf("please enter Date of birth DD/MM/YYYY\n");
+    scanf("%d/%d/%d",&day,&month,&year);
     while (!validDate(day,month,year))
            {
-               printf("please enter correct Date of birth DD MM YYYY\n");
-               scanf("%d %d %d",&day,&month,&year);
+               printf("please enter correct Date of birth DD/MM/YYYY\n");
+               scanf("%d/%d/%d",&day,&month,&year);
            }
 
 
@@ -240,7 +327,8 @@ void ModifyEmployee(int ID,int i)  // function that deletes the employee to be m
     salary = atof(SALARY);
     Emp[i]->salary = salary;
     printf("please enter the modified Employee's Address\n");
-    scanf("%s",address);
+    getchar();
+    gets(address);
     strcpy(Emp[i]->address,address);
 
 
@@ -256,104 +344,18 @@ void ModifyEmployee(int ID,int i)  // function that deletes the employee to be m
 
     }
 
-    printf("please enter the modified Date of birth DD-MM-YYYY\n");
-    scanf("%d %d %d",&day,&month,&year);
+    printf("please enter the modified Date of birth DD/MM/YYYY\n");
+    scanf("%d/%d/%d",&day,&month,&year);
     while (!validDate(day,month,year))
            {
-               printf("please enter correct Date of birth DD-MM-YYYY\n");
-               scanf("%d %d %d",&day,&month,&year);
+               printf("please enter correct Date of birth DD/MM/YYYY\n");
+               scanf("%d/%d/%d",&day,&month,&year);
            }
            Emp[i]->Birthday->day = day;
            Emp[i]->Birthday->month = month;
            Emp[i]->Birthday->year = year;
-             // printf("%.2f is the new employee salary\n",y->salary);
-}
-int Validemail (char* email) // validates email entered
-{ if (strstr(email,"@")&& strstr(email,".com"))
-    return 1;
-
-return 0;
-}
-int ValidName (char* Fname) //validates name entered
-{   flag=1;
-    for(i=0; i<strlen(Fname); i++)
-    {
-        if(Fname[i]<'A'||Fname[i]>'z')
-            flag=0;
-    }
-    return flag;
-}
-int ValidPhone (char* phone_num) // validates the phone number entered
-{   flag=1;
-    if(strlen(phone_num) != 11)
-        return 0;
-    for(i=0; i<strlen(phone_num); i++)
-    {
-        if(phone_num[0]!= '0')
-        {
-            flag = 0;
-        }
-        if(phone_num[i]<'0'||phone_num[i]>'9')
-            flag=0;
-    }
-    return flag;
-}
-int ValidID(char *x)  // validates the ID entered
-{
-    flag=1;
-    if(strlen(x) != 3)
-    return 0;
-    for(i=0; i<strlen(x); i++)
-    {
-        if(x[i]<'0'||x[i]>'9')
-            flag=0;
-    }
-    return flag;
 }
 
-int ValidSalary(char *x)  // validates the salary entered
-{
-    flag=1;
-    for(i=0; i<strlen(x); i++)
-    {
-        if(x[i]<'0'||x[i]>'9')
-        {
-           if(x[i]!='.')
-            flag=0;
-        }
-    }
-    return flag;
-}
-int validDate(int day,int month,int year)// validates the date entered
-{
-  //  int day =atoi(day1);
-   // int month =atoi(month1);
-  //  int year= atoi(year1);
-if(year>=1900 && year<=2022)
-    {
-        if(month>=1 && month<=12)
-        {
-            if((day>=1 && day<=31) && (month==1 || month==3 || month==5 || month==7 || month==8 || month==10 || month==12))
-                return 1;
-            else if((day>=1 && day<=30) && (month==4 || month==6 || month==9 || month==11))
-                return 1;
-            else if((day>=1 && day<=28) && (month==2))
-                return 1;
-            else if(day==29 && month==2 && (year%400==0 ||(year%4==0 && year%100!=0)))
-                return 1;
-            else
-                return 0;
-        }
-        else
-        {
-            return 0;
-        }
-    }
-    else
-    {
-        return 0;
-    }
-}
 
 char * serializeStudent(Employee *s, char d) //d=delimeeter
 {
@@ -513,15 +515,19 @@ void DeleteFunction(char first[20],char last[20])
         }
     }
 }
-/*int ValidFileName (char* filename)
-{
+int ValidFileName (char* filename)
+{   int d=0;
     int l=strlen(filename);
-    for (i=l-5;i<l;i++)
+    char buffer[5];
+    for (i=l-4;i<l;i++)
     {
-
+      buffer[d]=filename[i];
+      d++;
     }
-
-}*/
+    if (strcmp(buffer,".txt")==0)
+        return 1;
+    else return 0;
+}
 
 void Exit()
 {
@@ -530,14 +536,16 @@ void Exit()
 
 }
 int main()
-{   int mod,j,o,;
-    char sure;
+{   int mod,j,o;
     char Lname[20],Fname[20];
     printf("this is the main menu\n");
 
     printf("please enter file name to load from. it must be in the format of .txt\n");
     scanf("%s",filename);
-
+   while (!ValidFileName(filename)){
+    printf(" ERROR: please enter file name to load from. it must be in the format of .txt\n");
+   scanf("%s",filename);
+    }
     Load(filename,',');// mehtag a3ml validation ll filename lesa
     while (1){
     printf("please choose one of the following options to do\n");
