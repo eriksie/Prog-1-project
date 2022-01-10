@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
-#include <math.h>
 
 int flag=0,i=0,sz=0;
 char filename[30];
@@ -168,11 +167,11 @@ void Load(char *filename,char del) // loads the file into an array
                 printf("please enter valid email\n");
                 scanf("%s",email);
            }
-    printf("please enter Date of birth DD/MM/YYYY\n");
+    printf("please enter Date of birth DD MM YYYY\n");
     scanf("%d %d %d",&day,&month,&year);
     while (!validDate(day,month,year))
            {
-               printf("please enter correct Date of birth DD/MM/YYYY\n");
+               printf("please enter correct Date of birth DD MM YYYY\n");
                scanf("%d %d %d",&day,&month,&year);
            }
 
@@ -257,11 +256,11 @@ void ModifyEmployee(int ID,int i)  // function that deletes the employee to be m
 
     }
 
-    printf("please enter the modified Date of birth DD/MM/YYYY\n");
+    printf("please enter the modified Date of birth DD-MM-YYYY\n");
     scanf("%d %d %d",&day,&month,&year);
     while (!validDate(day,month,year))
            {
-               printf("please enter correct Date of birth DD/MM/YYYY\n");
+               printf("please enter correct Date of birth DD-MM-YYYY\n");
                scanf("%d %d %d",&day,&month,&year);
            }
            Emp[i]->Birthday->day = day;
@@ -325,9 +324,12 @@ int ValidSalary(char *x)  // validates the salary entered
     }
     return flag;
 }
-int validDate(int day,int month, int year)// validates the date entered
+int validDate(int day,int month,int year)// validates the date entered
 {
-if(year>=1900 && year<=9999)
+  //  int day =atoi(day1);
+   // int month =atoi(month1);
+  //  int year= atoi(year1);
+if(year>=1900 && year<=2022)
     {
         if(month>=1 && month<=12)
         {
@@ -511,9 +513,24 @@ void DeleteFunction(char first[20],char last[20])
         }
     }
 }
+/*int ValidFileName (char* filename)
+{
+    int l=strlen(filename);
+    for (i=l-5;i<l;i++)
+    {
 
+    }
+
+}*/
+
+void Exit()
+{
+   printf("You are exiting without saving the file \n");
+        exit(0);
+
+}
 int main()
-{   int mod,j,o,c=1;
+{   int mod,j,o,;
     char sure;
     char Lname[20],Fname[20];
     printf("this is the main menu\n");
@@ -522,7 +539,7 @@ int main()
     scanf("%s",filename);
 
     Load(filename,',');// mehtag a3ml validation ll filename lesa
-    while (c){
+    while (1){
     printf("please choose one of the following options to do\n");
     printf("search for an Employee by last name: 1\n");
     printf("Add a new Employee: 2\n");
@@ -536,17 +553,35 @@ int main()
     {
      case 1: printf("enter last name to search for\n");
              scanf("%s",Lname);
+              while (!ValidName(Lname))
+    {
+            printf("please enter valid name\n");
+            scanf("%s",Lname);
+    }
              Search(Lname);
+             printf("\n\n");
              break;
      case 2:
         AddEmployee();
+        printf("\n\n");
         break;
      case 3:
         printf("please enter Employee first name to be deleted\n");
         scanf("%s",Fname);
+           while (!ValidName(Fname))
+    {
+            printf("please enter valid name\n");
+            scanf("%s",Fname);
+    }
         printf("please enter Employee last name to be deleted\n");
         scanf("%s",Lname);
+        while (!ValidName(Lname))
+    {
+            printf("please enter valid name\n");
+            scanf("%s",Lname);
+    }
         DeleteFunction(Fname,Lname);
+        printf("\n\n");
         break;
      case 4:
           printf("please enter employee ID to be modified\n");
@@ -560,19 +595,21 @@ int main()
              if (j==sz-1)
            printf("no employee is found with this ID\n");
            }
+           printf("\n\n");
            break;
      case 5:
         Printsort();
+        printf("\n\n");
         break;
      case 6:
         saveFile(filename,Emp,',');
+        printf("\n\n");
         break;
      case 7:
-        printf("are you sure you want to quit?\n type Y if sure and anything else if you want to return to the menu\n");
-        sure = getchar();
-        if (sure == 'Y' || 'y')
-            c=0;
-        else break;
+        Exit();
+        break;
+     default:
+        printf("please enter correct number\n");
     }
     }
        return 0;
