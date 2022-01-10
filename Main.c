@@ -21,6 +21,7 @@ typedef struct
 Employee *x[100];  //global array
 char filename[]="employees.txt";
 // we pass the date and it creates the struct
+void printE(int i);
 Date* constructDate (int day,int month,int year)
 {
     Date*x=malloc(sizeof(Date));
@@ -183,7 +184,7 @@ void sortbySalary(Employee* x[],int n) // sorts employees by salary
         }
     }
 }
-void Print() //print function
+void Printsort(char *x )   //printing after sorting
 {
     int s;
     printf("Please choose type of sorting from this menu:\n");
@@ -461,11 +462,37 @@ Employee * ModifyEmployee(int ID, Employee* x)  // function that deletes the emp
 
   return y;
 }
-
+char * serializeStudent(Employee *s, char d) //d=delimeeter
+{
+    char ste[100];
+    ste[0]=0;
+    sprintf(ste,"%d%c%f%c%s%c%s%c%s%c%s%c%s%c%d%c%d%c%d\n",s->id,d,s->salary,d,s->phone_num,d,s->Fname,d,s->Lname,d,s->address,d,s->email,d,s->Birthday->day,d,s->Birthday->month,d,s->Birthday->year);
+    char* ret=malloc(strlen(ste)+1);
+    strcpy(ret,ste);
+    return ret;
+}
+void saveFile(char *filename,Employee *emp[],char del)
+{
+    FILE * fp=fopen(filename,"w");
+    if(!fp)
+    {
+        fprintf(stdout,"ERROR CREATING FILE\n");
+        exit(0);
+    }
+    for (i=0; i<Numrec(filename); i++)
+    {
+        char *str=serializeStudent(emp[i],del);
+        fprintf(fp,str);
+        free(str);
+    }
+    fclose(fp);
+    printf("File %s saved\n",filename);
+}
 int main()
 {
     Load(filename,',');
     Search("Khaled");
+    saveFile(filename,x,del);
      /*  int Mod;
     printf("please enter an Employee's data\n");
     x[0] = ConstructEmployee(124,7000,"0123456","youssef","Elkady","asd","mos@hotmail.com",13,10,2001);
