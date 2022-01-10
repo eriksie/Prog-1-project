@@ -387,11 +387,23 @@ void ModifyEmployee(int ID,int i)  // function that deletes the employee to be m
     }
 
     printf("please enter the modified Date of birth DD/MM/YYYY\n");
-    scanf("%d/%d/%d",&day,&month,&year);
+    scanf("%s",email);
+    while (!Validemail(email))
+           {
+                printf("please enter valid email\n");
+                scanf("%s",email);
+           }
+    printf("please enter Date of birth DD/MM/YYYY\n");
+    scanf("%d/",&day);
+    scanf("%d/",&month);
+    scanf("%d",&year);
     while (!validDate(day,month,year))
            {
                printf("please enter correct Date of birth DD/MM/YYYY\n");
-               scanf("%d/%d/%d",&day,&month,&year);
+               scanf("%d/",&day);
+               scanf("%d/",&month);
+               scanf("%d",&year);
+
            }
            Emp[i]->Birthday->day = day;
            Emp[i]->Birthday->month = month;
