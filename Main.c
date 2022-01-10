@@ -531,9 +531,19 @@ int ValidFileName (char* filename)
 
 void Exit()
 {
-   printf("You are exiting without saving the file \n");
+    char c;
+    printf("Are you sure you want to exit without saving?\n");
+    printf("(Enter Y for yes or N for no)\n");
+    getchar();
+    c=getchar();
+    while (!(c=='y'||c=='Y'||c=='N'||c=='n'))
+    {
+        printf("Please enter Y for yes or N for no\n");
+        getchar();
+        c=getchar();
+    }
+    if (c=='Y'||c=='y')
         exit(0);
-
 }
 int main()
 {   int mod,j,o;
@@ -546,16 +556,16 @@ int main()
     printf(" ERROR: please enter file name to load from. it must be in the format of .txt\n");
    scanf("%s",filename);
     }
-    Load(filename,',');// mehtag a3ml validation ll filename lesa
+    Load(filename,',');   // mehtag a3ml validation ll filename lesa
     while (1){
-    printf("please choose one of the following options to do\n");
-    printf("search for an Employee by last name: 1\n");
-    printf("Add a new Employee: 2\n");
-    printf("Delete an already existing Employee: 3\n");
-    printf("Modify an already existing Employee: 4\n");
-    printf("Print Employee records: 5\n");
-    printf("Save file: 6\n");
-    printf("Quit: 7\n");
+    printf("Please enter the option number chosen\n");
+        printf("1.Search for an Employee by last name\n");
+        printf("2.Add a new Employee\n");
+        printf("3.Delete an already existing Employee\n");
+        printf("4.Modify an already existing Employee\n");
+        printf("5.Sort Employee records and print\n");
+        printf("6.Save file\n");
+        printf("7.Quit\n");
     scanf("%d",&o);
     switch (o)
     {
