@@ -204,9 +204,32 @@ void Load(char *filename,char del) // loads the file into an array
 }
   void AddEmployee() // adds new employee entered by user
 {
-    int id,day,month,year;
+    int id,day,month,year,c=0;
     float salary;
     char Lname[10],Fname[10],address[30],email[30],phone_num[15],SALARY[10],ID[10];
+    printf("please enter Employee ID\n");
+    scanf("%s",ID);
+    while (!ValidID(ID))
+    {
+            printf("please enter valid ID\n");
+            scanf("%s",ID);
+    }
+    id = atoi(ID);
+    for(i=0;i<sz;i++)
+    {
+        if(id == Emp[i]->id)
+           {
+               c++;
+           }
+    }
+    if(c)
+    {
+        printf("This ID is already taken. Please try a different one\n");
+        AddEmployee();
+    }    
+  
+
+      
     printf("please enter the new Employee's first name\n");
     scanf("%s",Fname);
     while (!ValidName(Fname))
@@ -263,15 +286,7 @@ void Load(char *filename,char del) // loads the file into an array
            }
 
 
-    printf("please enter Employee ID\n");
-scanf("%s",ID);
-     while (!ValidID(ID))
-    {
-            printf("please enter valid ID\n");
-            scanf("%s",ID);
-    }
-    id = atoi(ID);
-
+    
     Emp[sz++] = ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 }
 
