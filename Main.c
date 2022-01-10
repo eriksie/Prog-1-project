@@ -47,12 +47,42 @@ Employee* ConstructEmployee (int id,float salary,char* Phone_num,char*Fname,char
     return y;
 }
 
-int Validemail (char* email) // validates email entered
+/*int Validemail (char* email) // validates email entered
 { if (strstr(email,"@")&& strstr(email,".com"))
     return 1;
 
 return 0;
+}*/
+
+int Validemail(char email[20])
+{
+    int q,p1=0,p2=0;
+    for(i=0; i<strlen(email)+1; i++)
+    {
+        if(email[i]=='@')
+            p1=i;
+    }
+    for(q=0; q<(strlen(email)+1); q++)
+    {
+        if(email[q]=='.')
+            p2=q;
+    }
+    for (q=0; q<strlen(email)+1; q++)
+    {
+        if(email[q]==' ')
+        {
+            return 0;
+        }
+    }
+    if (!isalpha(email[0]))
+        return 0;
+    if(p2-p1>1&&(p2+1)!=strlen(email)&&p1!=0)
+        return 1;
+    else
+        return 0;
+
 }
+
 int ValidName (char* Fname) //validates name entered
 {   flag=1;
     for(i=0; i<strlen(Fname); i++)
@@ -202,32 +232,29 @@ void Load(char *filename,char del) // loads the file into an array
     fclose(fp);
 
 }
+int RepeatedID(char* ID)
+{
+    int id = atoi(ID);
+    for(i=0;i<sz;i++)
+    {
+        if(id == Emp[i]->id)
+         return 0;
+    }
+    return 1;
+}
   void AddEmployee() // adds new employee entered by user
 {
-    int id,day,month,year,c=0;
+    int id,day,month,year;
     float salary;
     char Lname[10],Fname[10],address[30],email[30],phone_num[15],SALARY[10],ID[10];
     printf("please enter Employee ID\n");
     scanf("%s",ID);
-    while (!ValidID(ID))
+    while (!ValidID(ID)||!RepeatedID(ID))
     {
-            printf("please enter valid ID\n");
+            printf("please enter valid and not repeated ID\n");
             scanf("%s",ID);
     }
     id = atoi(ID);
-    for(i=0;i<sz;i++)
-    {
-        if(id == Emp[i]->id)
-           {
-               c++;
-           }
-    }
-    if(c)
-    {
-        printf("This ID is already taken. Please try a different one\n");
-        AddEmployee();
-    }
-
 
 
     printf("please enter the new Employee's first name\n");
@@ -517,18 +544,20 @@ void Printsort()   //printing after sorting
 
 void DeleteFunction(char first[20],char last[20])
 {
-    int i,j;
+    int j,c=1,p=0;
     for(i=0; i<sz; i++)
-    {
+    {  while (c){
         if(strcasecmp(Emp[i]->Lname,last)==0 && strcasecmp(Emp[i]->Fname,first)==0)
         {
             for(j=i; j<sz-1; j++)
                 Emp[j]=Emp[j+1];
             sz-=1;
-            i--;
-            DeleteFunction(first,last);
-        }
+            p+=1;
+        }else c=0;
     }
+}
+if(!p)
+    printf("no entry was found with the entered first and last name");
 }
 int ValidFileName (char* filename)
 {   int d=0;
