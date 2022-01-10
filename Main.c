@@ -226,10 +226,10 @@ void Load(char *filename,char del) // loads the file into an array
     {
         printf("This ID is already taken. Please try a different one\n");
         AddEmployee();
-    }    
-  
+    }
 
-      
+
+
     printf("please enter the new Employee's first name\n");
     scanf("%s",Fname);
     while (!ValidName(Fname))
@@ -286,7 +286,7 @@ void Load(char *filename,char del) // loads the file into an array
            }
 
 
-    
+
     Emp[sz++] = ConstructEmployee(id,salary,phone_num,Fname,Lname,address,email,day,month,year);
 }
 
@@ -382,7 +382,7 @@ char * serializeStudent(Employee *s, char d) //d=delimeeter
     return ret;
 }
 void saveFile(char *filename,Employee *emp[],char del)
-{   printf("size of record in save file is %d\n",sz);
+{
     FILE *fj=fopen(filename,"w");
     if(!fj)
     {
@@ -591,10 +591,12 @@ int main()
             printf("please enter valid name\n");
             scanf("%s",Lname);
     }
+             printf("\n");
              Search(Lname);
              printf("\n\n");
              break;
      case 2:
+        printf("\n");
         AddEmployee();
         printf("\n\n");
         break;
@@ -619,7 +621,7 @@ int main()
      case 4:
           printf("please enter employee ID to be modified\n");
           scanf("%d",&mod);
-
+          printf("\n");
           for (j=0;j<sz;j++){
              if (Emp[j]->id==mod){
                ModifyEmployee(mod,j);
@@ -631,17 +633,21 @@ int main()
            printf("\n\n");
            break;
      case 5:
+        printf("\n");
         Printsort();
         printf("\n\n");
         break;
      case 6:
+        printf("\n");
         saveFile(filename,Emp,',');
         printf("\n\n");
         break;
      case 7:
+        printf("\n");
         Exit();
         break;
      default:
+        printf("\n");
         printf("please enter correct number\n");
     }
     }
