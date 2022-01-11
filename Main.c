@@ -404,7 +404,7 @@ void ModifyEmployee(int ID,int i)  // function that deletes the employee to be m
 }
 
 
-char * serializeStudent(Employee *s, char d) //d=delimeeter
+char * serializeEmployee(Employee *s, char d) //d=delimeeter
 {
     char ste[100];
     ste[0]=0;
@@ -423,7 +423,7 @@ void saveFile(char *filename,Employee *emp[],char del)
     }
     for (i=0; i<sz; i++)
     {
-        char *str=serializeStudent(emp[i],del);
+        char *str=serializeEmployee(emp[i],del);
         fprintf(fj,str);
         free(str);
     }
