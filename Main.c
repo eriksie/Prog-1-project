@@ -104,7 +104,7 @@ int ValidPhone (char* phone_num) // validates the phone number entered
 int ValidID(char *x)  // validates the ID entered
 {
     flag=1;
-    if(strlen(x) != 3)
+    if(strlen(x) > 3)
     return 0;
     for(i=0; i<strlen(x); i++)
     {
@@ -408,7 +408,7 @@ char * serializeStudent(Employee *s, char d) //d=delimeeter
 {
     char ste[100];
     ste[0]=0;
-    sprintf(ste,"%d%c%s%c%s%c%.2f%c%d%c%d%c%d%c%s%c%s%c%s\n",s->id,d,s->Lname,d,s->Fname,d,s->salary,d,s->Birthday->day,d,s->Birthday->month,d,s->Birthday->year,d,s->address,d,s->phone_num,d,s->email);
+    sprintf(ste,"%d%c%s%c%s%c%.2f%c%d-%d-%d%c%s%c%s%c%s\n",s->id,d,s->Lname,d,s->Fname,d,s->salary,d,s->Birthday->day,s->Birthday->month,s->Birthday->year,d,s->address,d,s->phone_num,d,s->email);
     char* ret=malloc(strlen(ste)+1);
     strcpy(ret,ste);
     return ret;
@@ -433,7 +433,7 @@ void saveFile(char *filename,Employee *emp[],char del)
 
 void printE(int i)
 {
-    printf("First name:  %s\nLast name:  %s\nID of employee:  %d\nDate of birth of employee:  %d/%d/%d\nSalary of employee:  %.2f\nEmail of employee:  %s Address of employee:  %s\nPhone number of employee:  %s\n",Emp[i]->Fname,Emp[i]->Lname,Emp[i]->id,Emp[i]->Birthday->day,Emp[i]->Birthday->month,Emp[i]->Birthday->year,Emp[i]->salary,Emp[i]->email,Emp[i]->address,Emp[i]->phone_num);
+    printf("First name:  %s\nLast name:  %s\nID of employee:  %d\nDate of birth of employee:  %d-%d-%d\nSalary of employee:  %.2f\nEmail of employee:  %s Address of employee:  %s\nPhone number of employee:  %s\n",Emp[i]->Fname,Emp[i]->Lname,Emp[i]->id,Emp[i]->Birthday->day,Emp[i]->Birthday->month,Emp[i]->Birthday->year,Emp[i]->salary,Emp[i]->email,Emp[i]->address,Emp[i]->phone_num);
 }
 
 void Search(char *Lname)
