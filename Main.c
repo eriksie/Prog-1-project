@@ -160,7 +160,7 @@ if(year>=1900 && year<=2022)
 
 
 Employee * deSerialize(char *str,char d) // deserialize the entries in the file
-{ char del[2]={d,0};
+{ char del[3]={',','-',0};
     char *tok=strtok(str,del);   //getting first tok
     int i=0,id=0,day=0,month=0,year=0;
     float salary;
@@ -172,31 +172,31 @@ char Lname[20],Fname[20],address[20],email[20],phone_num[100];
         case 0:
             id=atoi(tok);
             break;
-        case 1:
+        case 3:
             salary=atof(tok);
             break;
-        case 2:
+        case 8:
             strcpy(phone_num,tok);
             break;
-        case 3:
+        case 2:
             strcpy(Fname,tok);
             break;
-        case 4:
+        case 1:
             strcpy(Lname,tok);
             break;
-        case 5:
+        case 7:
             strcpy(address,tok);
             break;
-        case 6:
+        case 9:
             strcpy(email,tok);
             break;
-        case 7:
+        case 4:
             day=atoi(tok);
             break;
-        case 8:
+        case 5:
             month=atoi(tok);
             break;
-        case 9:
+        case 6:
             year=atoi(tok);
             break;
         }
@@ -299,15 +299,15 @@ int RepeatedID(char* ID)
                 printf("please enter valid email\n");
                 scanf("%s",email);
            }
-    printf("please enter Date of birth DD/MM/YYYY\n");
-    scanf("%d/",&day);
-    scanf("%d/",&month);
+    printf("please enter Date of birth DD-MM-YYYY\n");
+    scanf("%d-",&day);
+    scanf("%d-",&month);
     scanf("%d",&year);
     while (!validDate(day,month,year))
            {
-               printf("please enter correct Date of birth DD/MM/YYYY\n");
-               scanf("%d/",&day);
-               scanf("%d/",&month);
+               printf("please enter correct Date of birth DD-MM-YYYY\n");
+               scanf("%d-",&day);
+               scanf("%d-",&month);
                scanf("%d",&year);
 
            }
@@ -386,22 +386,15 @@ void ModifyEmployee(int ID,int i)  // function that deletes the employee to be m
 
     }
 
-    printf("please enter the modified Date of birth DD/MM/YYYY\n");
-    scanf("%s",email);
-    while (!Validemail(email))
-           {
-                printf("please enter valid email\n");
-                scanf("%s",email);
-           }
-    printf("please enter Date of birth DD/MM/YYYY\n");
-    scanf("%d/",&day);
-    scanf("%d/",&month);
+    printf("please enter Date of birth DD-MM-YYYY\n");
+    scanf("%d-",&day);
+    scanf("%d-",&month);
     scanf("%d",&year);
     while (!validDate(day,month,year))
            {
-               printf("please enter correct Date of birth DD/MM/YYYY\n");
-               scanf("%d/",&day);
-               scanf("%d/",&month);
+               printf("please enter correct Date of birth DD-MM-YYYY\n");
+               scanf("%d-",&day);
+               scanf("%d-",&month);
                scanf("%d",&year);
 
            }
@@ -411,11 +404,11 @@ void ModifyEmployee(int ID,int i)  // function that deletes the employee to be m
 }
 
 
-char * serializeEmployee(Employee *s, char d) //d=delimeeter
+char * serializeStudent(Employee *s, char d) //d=delimeeter
 {
     char ste[100];
     ste[0]=0;
-    sprintf(ste,"%d%c%.2f%c%s%c%s%c%s%c%s%c%s%c%d%c%d%c%d\n",s->id,d,s->salary,d,s->phone_num,d,s->Fname,d,s->Lname,d,s->address,d,s->email,d,s->Birthday->day,d,s->Birthday->month,d,s->Birthday->year);
+    sprintf(ste,"%d%c%s%c%s%c%.2f%c%d%c%d%c%d%c%s%c%s%c%s\n",s->id,d,s->Lname,d,s->Fname,d,s->salary,d,s->Birthday->day,d,s->Birthday->month,d,s->Birthday->year,d,s->address,d,s->phone_num,d,s->email);
     char* ret=malloc(strlen(ste)+1);
     strcpy(ret,ste);
     return ret;
@@ -430,7 +423,7 @@ void saveFile(char *filename,Employee *emp[],char del)
     }
     for (i=0; i<sz; i++)
     {
-        char *str=serializeEmployee(emp[i],del);
+        char *str=serializeStudent(emp[i],del);
         fprintf(fj,str);
         free(str);
     }
@@ -440,7 +433,7 @@ void saveFile(char *filename,Employee *emp[],char del)
 
 void printE(int i)
 {
-    printf("First name:  %s\nLast name:  %s\nID of employee:  %d\nDate of birth of employee:  %d/%d/%d\nSalary of employee:  %.2f\nEmail of employee:  %s\nAddress of employee:  %s\nPhone number of employee:  %s\n",Emp[i]->Fname,Emp[i]->Lname,Emp[i]->id,Emp[i]->Birthday->day,Emp[i]->Birthday->month,Emp[i]->Birthday->year,Emp[i]->salary,Emp[i]->email,Emp[i]->address,Emp[i]->phone_num);
+    printf("First name:  %s\nLast name:  %s\nID of employee:  %d\nDate of birth of employee:  %d/%d/%d\nSalary of employee:  %.2f\nEmail of employee:  %s Address of employee:  %s\nPhone number of employee:  %s\n",Emp[i]->Fname,Emp[i]->Lname,Emp[i]->id,Emp[i]->Birthday->day,Emp[i]->Birthday->month,Emp[i]->Birthday->year,Emp[i]->salary,Emp[i]->email,Emp[i]->address,Emp[i]->phone_num);
 }
 
 void Search(char *Lname)
@@ -607,7 +600,6 @@ void Exit()
     while (!(c=='y'||c=='Y'||c=='N'||c=='n'))
     {
         printf("Please enter Y for yes or N for no\n");
-        getchar();
         c=getchar();
     }
     if (c=='Y'||c=='y'){
